@@ -90,7 +90,7 @@ const App: React.FC = () => {
               <option value={category.id} key={category.id}>
                 {category.name}
               </option>)
-            )) : (<option>Loading categories...</option>)}
+            )) : (<option>Loading...</option>)}
           </select>
         </div>
         <div className="form-group">

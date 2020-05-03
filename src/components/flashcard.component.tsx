@@ -43,7 +43,9 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
     }, 1000);
   };
 
+  
   return (
+
     <div
       className={`card ${flip ? "flip" : ""}`}
       style={{ height: `${height > 100 ? `${height}px` : "100px"}` }}
