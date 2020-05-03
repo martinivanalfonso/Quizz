@@ -1,6 +1,7 @@
 * {
   margin: 0px;
   padding: 0px;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -9,6 +10,18 @@ body {
   background-attachment: fixed;
   background-size: cover;
   margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+::-webkit-scrollbar-track-piece  {
+  background-color: white;
+}
+::-webkit-scrollbar-thumb:vertical {
+  height: 30px;
+  background-color: orange;
 }
 
 .header {

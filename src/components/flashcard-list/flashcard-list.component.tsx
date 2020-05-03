@@ -40,13 +40,13 @@ const item = {
 const FlashcardList: React.FC<Props> = ({ flashcards }) => {
   return (
     <div>
-      {flashcards.length ? (
+      {flashcards && flashcards.length ? (
         <motion.ul initial="hidden" animate="visible" variants={container}>
           <div className="card-grid">
             {flashcards.map((flashcard) => {
               return (
-                <motion.div variants={item}>
-                  <FlashCard flashcard={flashcard} key={flashcard.id} />
+                <motion.div variants={item} key={flashcard.id}>
+                  <FlashCard flashcard={flashcard} />
                 </motion.div>
               );
             })}
@@ -54,9 +54,9 @@ const FlashcardList: React.FC<Props> = ({ flashcards }) => {
         </motion.ul>
       ) : (
         <div className="card-grid">
-          {[1, 2, 3, 4].map((elem) => {
+          {[1, 2, 3, 4].map((elem, index) => {
             return (
-              <motion.div variants={item} className="card">
+              <motion.div key={index} variants={item} className="card">
                 <Spinner />
               </motion.div>
             );
