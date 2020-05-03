@@ -110,9 +110,8 @@ body {
   color: red;
 }
 
-.card .back.right{
+.card .back.right {
   color: green;
-
 }
 
 .options {
@@ -123,9 +122,9 @@ body {
 
 .option {
   margin: 0.25rem;
-  color:white;
+  color: white;
   font-size: 0.75rem;
-  padding: .5rem 1em;
+  padding: 0.5rem 1em;
   min-width: 200px;
   cursor: pointer;
   background-color: hsl(0, 50%, 50%);

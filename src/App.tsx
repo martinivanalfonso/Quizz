@@ -85,12 +85,12 @@ const App: React.FC = () => {
       <form className="header" onSubmit={(event) => handleSubmit(event)}>
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select name="category" id="category" ref={categoryRef}>
-            {categories.map((category) => (
+          <select name="category" id="category" style={{ width: '300px'}} ref={categoryRef}>
+            {categories.length ? (categories.map((category) => (
               <option value={category.id} key={category.id}>
                 {category.name}
-              </option>
-            ))}
+              </option>)
+            )) : (<option>Loading categories...</option>)}
           </select>
         </div>
         <div className="form-group">
