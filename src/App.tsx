@@ -64,7 +64,7 @@ const App: React.FC = () => {
     }).then((res) => {
       setFlashcards(
         res.data.results.map((item: APIResponse, index: number) => {
-          const answer = item.correct_answer;
+          const answer = decodeString(item.correct_answer);
           const options = [
             ...item.incorrect_answers.map((a: string) => decodeString(a)),
             answer,

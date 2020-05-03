@@ -9,11 +9,11 @@ interface Flashcard {
 
 const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   const [flip, setFlip] = useState(false);
-  const [rightAnswered, setRightAnswered] = useState(false);
   const [height, setHeight] = useState(0);
 
   const frontRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(document.createElement("div"));
 
   const calculateMaxHeight = () => {
     const frontHeight: number =
@@ -33,11 +33,14 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
     return () => window.removeEventListener("resize", calculateMaxHeight);
   }, []);
 
-  const handleClick = (event: React.MouseEvent) => {
+  const tryOption = (event: React.MouseEvent) => {
     setFlip(!flip);
     event.currentTarget.getAttribute("data-value") === flashcard.answer
-      ? setRightAnswered(true)
-      : setRightAnswered(false);
+      ? (cardRef.current.style.backgroundColor = "green")
+      : (cardRef.current.style.backgroundColor = "red");
+    setTimeout(() => {
+      cardRef.current.style.backgroundColor = "white";
+    }, 1000);
   };
 
   return (
@@ -45,6 +48,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
       className={`card ${flip ? "flip" : ""}`}
       style={{ height: `${height > 100 ? `${height}px` : "100px"}` }}
       onClick={() => setFlip(!flip)}
+      ref={cardRef}
     >
       <div className="front" ref={frontRef}>
         <div className="question-title">
@@ -57,7 +61,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
                 data-value={option}
                 className="option"
                 key={index}
-                onClick={(e) => handleClick(e)}
+                onClick={(e) => tryOption(e)}
               >
                 {option}
               </button>
@@ -65,7 +69,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
           })}
         </div>
       </div>
-      <div className={`back ${rightAnswered ? "right" : ""}`} ref={backRef}>
+      <div className="back" ref={backRef}>
         {flashcard.answer}
       </div>
     </div>
