@@ -11,8 +11,11 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   const [flip, setFlip] = useState(false);
   const [height, setHeight] = useState(0);
 
+  // Keeps track of the element's height
   const frontRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
+
+  // Keeps track of parent element to style 
   const cardRef = useRef<HTMLDivElement>(document.createElement("div"));
 
   const calculateMaxHeight = () => {
@@ -35,6 +38,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
     return () => window.removeEventListener("resize", calculateMaxHeight);
   }, []);
 
+  // Styles parent element based on the option user selected
   const tryOption = (event: React.MouseEvent) => {
     setFlip(!flip);
     event.currentTarget.getAttribute("data-value") === flashcard.answer
@@ -45,9 +49,8 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
     }, 1000);
   };
 
-  
+  // Card flip is done by custom css class animation "flip"
   return (
-
     <div
       className={`card ${flip ? "flip" : ""}`}
       style={{ height: `${height > 100 ? `${height}px` : "100px"}` }}

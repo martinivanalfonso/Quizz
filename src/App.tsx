@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import FlashcardList from "./components/flashcard-list/flashcard-list.component";
 import axios from "axios";
+
+import FlashcardList from "./components/flashcard-list/flashcard-list.component";
+import { decodeString } from "./utils";
 
 import "./App.css";
 
@@ -21,12 +23,15 @@ const App: React.FC = () => {
   const categoryRef = useRef<HTMLSelectElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
 
+
+  // Fetches and provides categories for select input
   useEffect(() => {
     axios
       .get("https://opentdb.com/api_category.php")
       .then((res) => setCategories(res.data.trivia_categories));
   }, []);
 
+  // Fetches initial quizz questions 
   useEffect(() => {
     axios.get("https://opentdb.com/api.php?amount=10").then((res) => {
       setFlashcards(
@@ -47,12 +52,7 @@ const App: React.FC = () => {
     });
   }, []);
 
-  const decodeString = (str: string) => {
-    const textArea: HTMLTextAreaElement = document.createElement("textarea");
-    textArea.innerHTML = str;
-    return textArea.value;
-  };
-
+// Fetches custom quizz questions based on the users input
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 

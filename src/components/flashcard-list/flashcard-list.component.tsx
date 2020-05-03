@@ -15,6 +15,7 @@ interface Props {
   flashcards: Flashcard[];
 }
 
+// Grid framer-motion animation props
 const container = {
   hidden: { opacity: 1, scale: 0 },
   visible: {
@@ -28,6 +29,7 @@ const container = {
   },
 };
 
+// Grid item framer-motion animation props
 const item = {
   hidden: { opacity: 0 },
   visible: {
