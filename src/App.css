@@ -33,6 +33,9 @@ body {
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
 }
+.form-group > select {
+  min-width: 300px;
+}
 
 .btn {
   background-color: hsl(200, 100%, 50%);

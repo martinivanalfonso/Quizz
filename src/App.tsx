@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import FlashcardList from "./components/flashcard-list.component";
+import FlashcardList from "./components/flashcard-list/flashcard-list.component";
 import axios from "axios";
 
 import "./App.css";
@@ -31,7 +31,7 @@ const App: React.FC = () => {
     axios.get("https://opentdb.com/api.php?amount=10").then((res) => {
       setFlashcards(
         res.data.results.map((item: APIResponse, index: number) => {
-          const answer = item.correct_answer;
+          const answer = decodeString(item.correct_answer);
           const options = [
             ...item.incorrect_answers.map((a: string) => decodeString(a)),
             answer,
@@ -85,7 +85,7 @@ const App: React.FC = () => {
       <form className="header" onSubmit={(event) => handleSubmit(event)}>
         <div className="form-group">
           <label htmlFor="category">Category</label>
-          <select name="category" id="category" style={{ width: '300px'}} ref={categoryRef}>
+          <select name="category" id="category" ref={categoryRef}>
             {categories.length ? (categories.map((category) => (
               <option value={category.id} key={category.id}>
                 {category.name}

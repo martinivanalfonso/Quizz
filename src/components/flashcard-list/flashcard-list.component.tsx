@@ -1,6 +1,6 @@
 import React from "react";
-import FlashCard from "./flashcard.component";
-import Spinner from "./spinner/spinner.component";
+import FlashCard from "../flashcard/flashcard.component";
+import Spinner from "../spinner/spinner.component";
 
 import { motion } from "framer-motion";
 

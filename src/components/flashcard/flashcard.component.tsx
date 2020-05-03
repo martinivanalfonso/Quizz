@@ -24,7 +24,9 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   };
 
   useEffect(() => {
-    calculateMaxHeight();
+    setTimeout(() => {
+      calculateMaxHeight();  
+    },1500)
   }, [flashcard.question]);
 
   useEffect(() => {
