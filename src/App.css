@@ -33,6 +33,10 @@ body {
   padding: 1rem 1.5rem;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
   font-weight: 600;
+  position: sticky;
+  position: -webkit-sticky; /* Safari */
+  top: 0;
+  z-index: 10;
 }
 
 .form-group {
@@ -61,6 +65,12 @@ body {
 
 .btn:hover {
   background-color: hsl(200, 100%, 40%);
+}
+
+.btn.disabled,
+.btn.disabled:hover{
+  background-color: hsl(200, 100%, 30%);
+  cursor: unset;
 }
 
 .card-grid {
@@ -144,6 +154,13 @@ body {
   color: white;
 }
 
+.error-msg{
+  text-align: center;
+  color: red;
+  font-size: 0.75rem;
+  margin: 0.5rem;
+}
+
 .options:first-child {
   margin-top: 0;
 }
@@ -151,6 +168,11 @@ body {
 @media screen and (max-width: 600px) {
   .card-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .card {
+    transform: perspective(0px);
+    transform-style:none;
+    transition: none;
   }
   .option {
     min-width: 100px;

@@ -19,6 +19,8 @@ interface Category {
 
 const App: React.FC = () => {
   const [flashcards, setFlashcards] = useState([]);
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const categoryRef = useRef<HTMLSelectElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
@@ -28,7 +30,10 @@ const App: React.FC = () => {
   useEffect(() => {
     axios
       .get("https://opentdb.com/api_category.php")
-      .then((res) => setCategories(res.data.trivia_categories));
+      .then((res) => {
+        setCategories(res.data.trivia_categories)
+        setIsLoading(false)
+      });
   }, []);
 
   // Fetches initial quizz questions 
@@ -49,7 +54,7 @@ const App: React.FC = () => {
           };
         })
       );
-    });
+    }).catch(() => setError("Sorry, the API is not responding right now, try again later."));
   }, []);
 
 // Fetches custom quizz questions based on the users input
@@ -96,6 +101,7 @@ const App: React.FC = () => {
         <div className="form-group">
           <label htmlFor="amount">Number of Questions</label>
           <input
+            disabled={isLoading}
             type="number"
             id="amount"
             min="1"
@@ -105,10 +111,11 @@ const App: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <button className="btn" type="submit">Generate</button>
+            <button disabled={isLoading} className={`btn ${isLoading ? 'disabled' : ''}`} type="submit">{isLoading ? "Loading..." : "Generate"}</button>
         </div>
       </form>
       <div className="container">
+            {error && <p className="error-msg">{error}</p>}
         <FlashcardList flashcards={flashcards} />
       </div>
       ;
