@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+
+import { CounterContext } from "../../counterContext";
 
 interface Flashcard {
   id: number;
@@ -10,12 +12,13 @@ interface Flashcard {
 const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   const [flip, setFlip] = useState(false);
   const [height, setHeight] = useState(0);
+  const { handleAnswer } = useContext(CounterContext);
 
   // Keeps track of the element's height
   const frontRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
 
-  // Keeps track of parent element to style 
+  // Keeps track of parent element to style
   const cardRef = useRef<HTMLDivElement>(document.createElement("div"));
 
   const calculateMaxHeight = () => {
@@ -28,24 +31,27 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      calculateMaxHeight();  
-    },1500)
+      calculateMaxHeight();
+    }, 1500);
   }, [flashcard.question]);
 
   useEffect(() => {
     window.addEventListener("resize", calculateMaxHeight);
-
     return () => window.removeEventListener("resize", calculateMaxHeight);
   }, []);
 
   // Styles parent element based on the option user selected
   const tryOption = (event: React.MouseEvent) => {
     setFlip(!flip);
-    event.currentTarget.getAttribute("data-value") === flashcard.answer
-      ? (cardRef.current.style.backgroundColor = "green")
-      : (cardRef.current.style.backgroundColor = "red");
+    if (event.currentTarget.getAttribute("data-value") === flashcard.answer) {
+      cardRef.current.style.backgroundColor = "green";
+      handleAnswer(true, flashcard.id);
+    } else {
+      cardRef.current.style.backgroundColor = "red";
+      handleAnswer(false, flashcard.id);
+    }
     setTimeout(() => {
-      cardRef.current.style.backgroundColor = "white";
+      cardRef.current.style.backgroundColor = "grey";
     }, 1000);
   };
 
