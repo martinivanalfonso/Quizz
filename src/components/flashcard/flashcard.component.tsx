@@ -15,6 +15,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   const { handleAnswer } = useContext(CounterContext);
 
   // Keeps track of the element's height
+  const MIN_HEIGHT = 100
   const frontRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
 
@@ -26,14 +27,16 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
       frontRef.current?.getBoundingClientRect().height || 0;
     const backHeight: number =
       frontRef.current?.getBoundingClientRect().height || 0;
-    setHeight(Math.max(frontHeight, backHeight, 100));
+    setHeight(Math.max(frontHeight, backHeight, MIN_HEIGHT));
   };
 
+  // Resizes component
   useEffect(() => {
-    setTimeout(() => {
+    const resizeTimeOut = setTimeout(() => {
       calculateMaxHeight();
-    }, 1500);
-  }, [flashcard.question]);
+    }, 1500); 
+    return () => clearTimeout(resizeTimeOut)
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", calculateMaxHeight);
@@ -59,7 +62,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
   return (
     <div
       className={`card ${flip ? "flip" : ""}`}
-      style={{ height: `${height > 100 ? `${height}px` : "100px"}` }}
+      style={{ height: `${height > MIN_HEIGHT ? `${height}px` : `${MIN_HEIGHT}px`}` }}
       onClick={() => setFlip(!flip)}
       ref={cardRef}
     >

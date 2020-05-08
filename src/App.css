@@ -166,6 +166,9 @@ body {
 }
 
 @media screen and (max-width: 600px) {
+  .header {
+    justify-content: flex-start;
+  }
   .card-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
@@ -173,6 +176,9 @@ body {
     transform: perspective(0px);
     transform-style:none;
     transition: none;
+  }
+  .card .back {
+    font-size: 1.2rem;
   }
   .option {
     min-width: 100px;
