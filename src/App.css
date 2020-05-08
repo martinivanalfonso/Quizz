@@ -52,6 +52,13 @@ body {
 }
 .form-group > select {
   min-width: 300px;
+  border: 1px solid rgba(34,36,38,.15);
+  background-color: white;
+  padding: 0.5em 1em;
+}
+.form-group > input {
+  border: 1px solid rgba(34,36,38,.15);
+  padding: 0.5em 1em;
 }
 
 .btn {
@@ -111,20 +118,14 @@ body {
 }
 
 .card .front {
-  left: 0;
   top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
+  padding: 1rem;
   text-align: center;
 }
-
+  
 .card .front,
 .card .back {
   position: absolute;
-  padding: 1rem;
   backface-visibility: hidden;
 }
 
@@ -151,7 +152,10 @@ body {
   background-color: hsl(0, 50%, 50%);
   border-radius: 0.3em;
   border: none;
-  color: white;
+}
+
+.option:hover {
+  background-color: hsl(0, 50%, 40%);
 }
 
 .error-msg{
@@ -178,7 +182,7 @@ body {
     transition: none;
   }
   .card .back {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   .option {
     min-width: 100px;
@@ -186,5 +190,5 @@ body {
 }
 
 .counter-msg {
-  color: hsl(200, 100%, 50%)
+  color: hsl(200, 100%, 50%);
 }

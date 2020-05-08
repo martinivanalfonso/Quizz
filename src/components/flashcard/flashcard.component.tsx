@@ -55,7 +55,7 @@ const FlashCard: React.FC<{ flashcard: Flashcard }> = ({ flashcard }) => {
     }
     setTimeout(() => {
       cardRef.current.style.backgroundColor = "grey";
-    }, 1000);
+    }, 1000); 
   };
 
   // Card flip is done by custom css class animation "flip"
