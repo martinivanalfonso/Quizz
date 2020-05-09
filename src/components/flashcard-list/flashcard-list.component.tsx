@@ -1,8 +1,10 @@
 import React from "react";
+import { motion } from "framer-motion";
+
 import FlashCard from "../flashcard/flashcard.component";
 import Spinner from "../spinner/spinner.component";
 
-import { motion } from "framer-motion";
+import "./flashcard-list.styles.css";
 
 interface Flashcard {
   id: number;
