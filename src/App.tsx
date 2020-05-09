@@ -1,17 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 
 import FlashcardList from "./components/flashcard-list/flashcard-list.component";
-import { CounterContext } from "./counterContext";
-import { decodeString } from "./utils";
+import { CounterContext } from "./CounterContext";
+import useFlashcards from "./useFlashcards";
 
 import "./App.css";
-
-interface APIResponse {
-  question: string;
-  correct_answer: string;
-  incorrect_answers: string[];
-}
 
 interface Category {
   id: string;
@@ -19,23 +13,17 @@ interface Category {
 }
 
 const App: React.FC = () => {
-  const [flashcards, setFlashcards] = useState([]);
-  const [error, setError] = useState();
+  // Header form control
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const categoryRef = useRef<HTMLSelectElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
 
+  // Provides initial flashcards and handles generate custom flashcards
+  const [flashcards, fetchFlashcards, error] = useFlashcards();
+
   // Keeps track of counter state
-  const [counter, setCounter] = useState<number>(0);
-  const [ids, setIds] = useState(new Set());
-  const handleAnswer = (isRight: boolean, id: number) => {
-    if (ids.has(id)) return;
-    setIds(ids.add(id));
-    isRight
-      ? setCounter((prevState) => ++prevState)
-      : setCounter((prevState) => --prevState);
-  };
+  const { counter } = useContext(CounterContext);
 
   // Fetches and provides categories for select input
   useEffect(() => {
@@ -45,65 +33,14 @@ const App: React.FC = () => {
     });
   }, []);
 
-  // Fetches initial quizz questions
-  useEffect(() => {
-    axios
-      .get("https://opentdb.com/api.php?amount=10")
-      .then((res) => {
-        setFlashcards(
-          res.data.results.map((item: APIResponse, index: number) => {
-            const answer = decodeString(item.correct_answer);
-            const options = [
-              ...item.incorrect_answers.map((a: string) => decodeString(a)),
-              answer,
-            ];
-            return {
-              id: `${index}-${Date.now()}`,
-              question: decodeString(item.question),
-              answer: decodeString(answer),
-              options: options.sort(() => Math.random() - 0.5),
-            };
-          })
-        );
-      })
-      .catch(() =>
-        setError("Sorry, the API is not responding right now, try again later.")
-      );
-  }, []);
-
-  // Fetches custom quizz questions based on the users input
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    axios
-      .get("https://opentdb.com/api.php?amount=10", {
-        params: {
-          amount: amountRef.current?.value,
-          category: categoryRef.current?.value,
-        },
-      })
-      .then((res) => {
-        setFlashcards(
-          res.data.results.map((item: APIResponse, index: number) => {
-            const answer = decodeString(item.correct_answer);
-            const options = [
-              ...item.incorrect_answers.map((a: string) => decodeString(a)),
-              answer,
-            ];
-            return {
-              id: `${index}-${Date.now()}`,
-              question: decodeString(item.question),
-              answer: decodeString(answer),
-              options: options.sort(() => Math.random() - 0.5),
-            };
-          })
-        );
-      });
+    fetchFlashcards(categoryRef.current?.value, amountRef.current?.value);
   };
 
   return (
     <>
-      <form className="header" onSubmit={(event) => handleSubmit(event)}>
+      <form className="header" onSubmit={(event) => handleFormSubmit(event)}>
         <div className="form-group">
           <label htmlFor="category">Category</label>
           <select name="category" id="category" ref={categoryRef}>
@@ -140,14 +77,12 @@ const App: React.FC = () => {
           </button>
         </div>
         <div className="form-group">
-        <h2 className="counter-msg">Score: {counter}</h2>
+          <h2 className="counter-msg">Score: {counter}</h2>
         </div>
       </form>
       <div className="container">
         {error && <p className="error-msg">{error}</p>}
-        <CounterContext.Provider value={{ counter, handleAnswer }}>
-          <FlashcardList flashcards={flashcards} />
-        </CounterContext.Provider>
+        <FlashcardList flashcards={flashcards} />
       </div>
     </>
   );

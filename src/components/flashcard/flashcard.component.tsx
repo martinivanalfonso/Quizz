@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 
-import { CounterContext } from "../../counterContext";
+import { CounterContext } from "../../CounterContext";
 
 interface Flashcard {
   id: number;
